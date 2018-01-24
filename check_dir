@@ -1,0 +1,34 @@
+#!/bin/bash
+
+################HELP###################
+if [ "$1" == "-h" ] || [ "$1" == "--help" ] || [ -z $1 ]
+then
+	printf "\nRun in the form of: ./check /path/to/location /path/to/location\n"
+	exit 0
+fi
+
+#############START####################
+DIR1=$1   # /home/tmp
+
+DIR1_HASH=`find $DIR1 -type f -exec md5sum {} \; | awk '{print $1}' | md5sum`
+
+DIR2=$2  # /home/dir/tmp
+
+DIR2_HASH=`find $DIR2 -type f -exec md5sum {} \; | awk '{print $1}' | md5sum`
+
+if [ "$DIR1_HASH" != "$DIR2_HASH" ]
+then
+	echo "File has changed"
+else
+	echo "File has not changed"
+fi
+
+##Print hashes for viewing##
+
+printf $DIR1_HASH
+printf "\n"
+printf $DIR2_HASH
+printf "\n"
+
+###########done######################
+
